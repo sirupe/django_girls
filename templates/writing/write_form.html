@@ -1,7 +1,9 @@
-<form action="{% url 'writing:write' %}" method="post">
+<form action="{% url 'writing:write' %}" method="post">{%  csrf_token %}
     제목 :
     <input type="text" name="title"/>
     내용 :
     <textarea name="contents"></textarea>
+    태그 :
+    <input type="text" name="tags"/>
     <input type="submit"/>
 </form>

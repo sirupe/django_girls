@@ -1,5 +1,9 @@
-{% for writing in writings %}
-    <h3>{% writing.title %}</h3>
-    <p>{% writing.contents %}</p>
-    <p>-----------------------------------------------------------------</p>
-{% endfor %}
+<html>
+    {% for writing in writings %}
+        <h3>{{ writing.id }} | {{ writing.title }}</h3>
+        <div>{{ writing.contents }}</div>
+        <div>{{ writing.uploaded_time }}</div>
+        <p>-----------------------------------------------------------------</p>
+    {% endfor %}
+    <button onclick="location.href='{% url 'writing:write_form' %}'">글쓰기</button>
+</html>
