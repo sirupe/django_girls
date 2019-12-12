@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse
 
 from writing.writing_forms import WritingForm
-from writing.models import Writing, Tag, WritingsTag
+from writing.models import Writing, Tag
 
 
 def entrance(request):
@@ -18,10 +18,8 @@ def write_form(request):
 
 
 def write(request):
-    # 글을 저장한다.
     request_post_params = request.POST
-    writing = Writing(title=request_post_params['title'], contents=request_post_params['contents'])
-    writing.save()
+
     # 태그를 각각 분리한다(',')
     tags = request_post_params['tags'].split(',')
     # 분리한 태그들을 저장한다. 이 때 기존에 존재하는 태그는 insert 하지 않는다.
@@ -35,11 +33,12 @@ def write(request):
             tags_set.append(Tag(name=tag))
     #  -3. tags 저장
     Tag.objects.bulk_create(tags_set)
-    # 저장된 글과 사용자가 입력한 태그들의 id 를 writingstag 테이블에 저장한다. 이 때 중복값은 절대 발생하지 않는다.
-    # tag_id 와 writing_id 가 foreign_key 로 연결되어 있기 때문에 두 테이블의 QuerySet 이 필요하다.
-    tag_query_set = Tag.objects.filter(name__in=tags)
-
-    for tag in tag_query_set:
-        WritingsTag(tag_id=tag, writing_id=writing).save()
+    tags_query_set = Tag.objects.filter(name__in=tags)
+    # 글을 저장한다.
+    writing = Writing(title=request_post_params['title'], contents=request_post_params['contents'])
+    writing.save()
+    # 다:다 관계가 설정되어 있는 Tag 와 연결하기 위해 Writing 에 Tag 를 추가한다.
+    for tag_query_set in tags_query_set:
+        writing.tags.add(tag_query_set)
     # 메인 화면으로 리다이렉트
     return HttpResponseRedirect(reverse('writing:entrance'))
