@@ -8,7 +8,7 @@ class Writing(models.Model):
     uploaded_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.id
+        return f"{self.id}, {self.title}, {self.contents}, {self.uploaded_time}"
 
 
 class Tag(models.Model):
