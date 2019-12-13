@@ -1,0 +1,21 @@
+{% extends "writing/main_form.html" %}
+
+{% block contents %}
+<html>
+    {% if is_paginated %}
+        {% for writing in object_list %}
+            <a href="{% url 'writing:writing' writing.id  %}">
+                <h3>{{ writing.id }} | {{ writing.title }}</h3>
+            </a>
+            <div>{{ writing.contents|truncatewords:50 }}</div>
+            <div>{{ writing.uploaded_time }}</div>
+            <p>-----------------------------------------------------------------</p>
+        {% endfor %}
+        {% for i in paginator.page_range %}
+            {{ i }}
+        {% endfor %}
+    {%  endif %}
+
+    <button onclick="location.href='{% url 'writing:write' %}'">글쓰기</button>
+</html>
+{% endblock %}

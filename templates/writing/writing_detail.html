@@ -1,0 +1,9 @@
+{% extends "writing/main_form.html" %}
+{% block contents %}
+<html>
+    <h3>{{ writing.title }}</h3>
+    <p>{{ writing.uploaded_time }}</p>
+    <div>{{ writing.contents }}</div>
+    <p><a href="{% url 'writing:index' %}">목록으로</a></p>
+</html>
+{% endblock %}
