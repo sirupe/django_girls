@@ -1,8 +1,9 @@
 from django.urls import path
-from . import views
+
+from writing.views import EntranceView, WriteView
+
 app_name = 'polls'
 urlpatterns = [
-    path('', views.entrance, name='entrance'),
-    path('writing/write_form', views.write_form, name='write_form'),
-    path('write', views.write, name='write')
+    path('', EntranceView.as_view(), name=''),
+    path('write', WriteView.as_view(), name='write')
 ]
